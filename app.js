@@ -29,6 +29,9 @@ const priceDiff = document.getElementById('price-diff');
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toast-message');
 
+const manualBarcode = document.getElementById('manual-barcode');
+const btnManual = document.getElementById('btn-manual');
+
 function formatPrice(n) {
   return n === null || n === undefined || isNaN(n)
     ? '—'
@@ -191,6 +194,16 @@ function clearAll() {
   showToast('Tutti i prodotti eliminati');
 }
 
+function handleManualBarcode() {
+  const code = manualBarcode.value.trim();
+  if (!code) {
+    showToast('Inserisci un codice');
+    return;
+  }
+  onScanSuccess(code);
+  manualBarcode.value = '';
+}
+
 function renderProducts() {
   productCount.textContent = products.length;
   if (products.length === 0) {
@@ -243,6 +256,11 @@ fileInput.addEventListener('change', async e => {
     showToast("Nessun codice trovato nell'immagine");
   }
   fileInput.value = '';
+});
+
+btnManual.addEventListener('click', handleManualBarcode);
+manualBarcode.addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleManualBarcode();
 });
 
 btnClearAll.addEventListener('click', clearAll);
